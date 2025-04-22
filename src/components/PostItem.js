@@ -10,6 +10,7 @@ const PostItem = ({ post, onDelete, onLike }) => {
       <h3>{post.title}</h3>
       <p>{post.content}</p>
       <div className="post-actions">
+      // Feature added for developer task
         <button onClick={() => onLike(post.id)}>❤️ {post.likes}</button>
         <button onClick={() => navigate(`/edit/${post.id}`)}>✏️</button>
         <button onClick={() => onDelete(post.id)}>🗑️</button>
