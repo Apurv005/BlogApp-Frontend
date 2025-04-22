@@ -20,7 +20,7 @@ const CreatePost = ({ addPost, updatePost, posts }) => {
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
+// Feature: Added basic validation to form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
