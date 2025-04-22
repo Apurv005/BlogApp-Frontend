@@ -9,6 +9,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
       <div className="nav-links">
         <Link to="/">Home</Link>
         <Link to="/create">Create</Link>
+        // Feature: Dark mode toggle added for user preference
         <button onClick={() => setDarkMode(!darkMode)}>
           {darkMode ? "🌞" : "🌙"}
         </button>
