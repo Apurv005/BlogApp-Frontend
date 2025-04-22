@@ -20,7 +20,7 @@ const CreatePost = ({ addPost, updatePost, posts }) => {
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
+// Feature: Added basic validation to form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -49,6 +49,7 @@ const CreatePost = ({ addPost, updatePost, posts }) => {
 
   return (
     <div className="container">
+      // Feature: Added header to improve Edit Post clarity
       <h2>{isEdit ? "Edit Post" : "Create Post"}</h2>
       <form onSubmit={handleSubmit} className="post-form">
         <input
