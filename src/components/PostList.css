@@ -1,0 +1,27 @@
+/* src/components/PostList.css */
+
+.post-list-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-list-title {
+    font-size: 24px;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .no-posts-msg,
+  .error-msg,
+  .loader {
+    text-align: center;
+    margin-top: 30px;
+    color: #666;
+    font-size: 18px;
+  }
+  

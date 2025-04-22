@@ -1,18 +1,16 @@
-import React from 'react';
-import './Navbar.css';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Navbar.css";
 
-const Navbar = ({ darkMode, toggleDarkMode }) => {
+const Navbar = ({ darkMode, setDarkMode }) => {
   return (
-    <nav className={`navbar ${darkMode ? 'dark' : ''}`}>
-      <div className="navbar__logo">
-        <Link to="/">📝 BlogZone</Link>
-      </div>
-      <div className="navbar__links">
+    <nav className="navbar">
+      <h1>📝 Blog App</h1>
+      <div className="nav-links">
         <Link to="/">Home</Link>
-        <Link to="/create">Create Post</Link>
-        <button onClick={toggleDarkMode} className="dark-mode-toggle">
-          {darkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
+        <Link to="/create">Create</Link>
+        <button onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? "🌞" : "🌙"}
         </button>
       </div>
     </nav>

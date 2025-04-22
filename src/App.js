@@ -1,9 +1,9 @@
-// src/App.js
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
+import API_BASE from "./api";
 import "./App.css";
 
 function App() {
@@ -14,32 +14,31 @@ function App() {
     document.body.className = darkMode ? "dark-mode" : "";
   }, [darkMode]);
 
-  const addPost = (newPost) => {
-    const post = {
-      id: Date.now(),
-      title: newPost.title,
-      content: newPost.content,
-      likes: 0,
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const res = await fetch(`${API_BASE}/posts`);
+      const data = await res.json();
+      setPosts(data);
     };
-    setPosts([post, ...posts]);
-  };
+    fetchPosts();
+  }, []);
+
+  const addPost = (newPost) => setPosts([newPost, ...posts]);
 
   const updatePost = (id, updatedPost) => {
-    const updated = posts.map((p) =>
-      p.id === id ? { ...p, ...updatedPost } : p
-    );
+    const updated = posts.map((p) => (p.id === id ? updatedPost : p));
     setPosts(updated);
   };
 
-  const deletePost = (id) => {
-    setPosts(posts.filter((post) => post.id !== id));
+  const deletePost = async (id) => {
+    await fetch(`${API_BASE}/posts/${id}`, { method: "DELETE" });
+    setPosts(posts.filter((p) => p.id !== id));
   };
 
-  const likePost = (id) => {
-    const liked = posts.map((p) =>
-      p.id === id ? { ...p, likes: p.likes + 1 } : p
-    );
-    setPosts(liked);
+  const likePost = async (id) => {
+    const res = await fetch(`${API_BASE}/posts/${id}/like`, { method: "POST" });
+    const updated = await res.json();
+    setPosts(posts.map((p) => (p.id === id ? updated : p)));
   };
 
   return (
@@ -50,16 +49,12 @@ function App() {
           <Route
             path="/"
             element={
-              <Home
-                posts={posts}
-                deletePost={deletePost}
-                likePost={likePost}
-              />
+              <Home posts={posts} deletePost={deletePost} likePost={likePost} />
             }
           />
           <Route
             path="/create"
-            element={<CreatePost addPost={addPost} posts={posts} />}
+            element={<CreatePost addPost={addPost} />}
           />
           <Route
             path="/edit/:id"

@@ -1,44 +1,61 @@
-// src/components/PostForm.js
 import React, { useState, useEffect } from "react";
-import "./PostForm.css";
+import API_BASE from "../api";
 
-const PostForm = ({ onSubmit, initialData = {}, isEditing }) => {
+const PostForm = ({ onPostCreated, editingPost, onPostUpdated }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    if (initialData.title) setTitle(initialData.title);
-    if (initialData.content) setContent(initialData.content);
-  }, [initialData]);
+    if (editingPost) {
+      setTitle(editingPost.title);
+      setContent(editingPost.content);
+    }
+  }, [editingPost]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title.trim() || !content.trim()) {
-      alert("Please fill in both the title and content fields.");
-      return;
+    const payload = { title, content };
+
+    if (editingPost) {
+      const res = await fetch(`${API_BASE}/posts/${editingPost.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const updated = await res.json();
+      onPostUpdated(updated);
+    } else {
+      const res = await fetch(`${API_BASE}/posts`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const newPost = await res.json();
+      onPostCreated(newPost);
     }
 
-    onSubmit({ ...initialData, title, content });
     setTitle("");
     setContent("");
   };
 
   return (
-    <form className="post-form" onSubmit={handleSubmit}>
-      <h2>{isEditing ? "Edit Post" : "Create Post"}</h2>
+    <form onSubmit={handleSubmit}>
+      <h2>{editingPost ? "Edit Post" : "Create Post"}</h2>
       <input
         type="text"
-        placeholder="Post Title"
+        placeholder="Post title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        required
       />
       <textarea
-        placeholder="Write something awesome..."
+        placeholder="Post content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        required
       />
-      <button type="submit">{isEditing ? "Update" : "Publish"}</button>
+      <button type="submit">{editingPost ? "Update" : "Create"}</button>
     </form>
   );
 };
