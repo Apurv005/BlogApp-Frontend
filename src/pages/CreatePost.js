@@ -49,6 +49,7 @@ const CreatePost = ({ addPost, updatePost, posts }) => {
 
   return (
     <div className="container">
+      // Feature: Added header to improve Edit Post clarity
       <h2>{isEdit ? "Edit Post" : "Create Post"}</h2>
       <form onSubmit={handleSubmit} className="post-form">
         <input
